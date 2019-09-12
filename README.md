@@ -12,7 +12,7 @@ VF is intended to provide a really easy, efficient to read & write volume data i
 
 Files are structured with the following:
 
-* Header (78 Bytes)
+* **Header (77 Bytes)**
   * Four CC (4 Bytes) equal to `VF2X` All Upper Case
   * Minor Version Number (1 Byte) 
    * Data Type (1 Byte)
@@ -31,19 +31,19 @@ Files are structured with the following:
       * `ushort resolution.x`
       * `ushort resolution.y`
       * `ushort resolution.z`
-   * 3D Space Specification (1 Byte)
-      * `Space.LHS_YUp = 0`
-      * `Space.LHS_ZUp = 1`
-      * `Space.RHS_YUp = 2`
-      * `Space.RHS_ZUp = 3`
    * Volume Local Transform (float4x4 matrix 64 Bytes)
      * Transforms a unit Box (size 1, centered, extents in range [-0.5..0.5]).
      * Matrix defined in Column-Major
      * Storage Ordered as `a11,a12,a13,a14,a21,a22,a23,a24,a31,a32,a33,a34,a41,a42,a43,a44`
-* Data (Variable, depending on Data & Resolution)
+* **Data (Variable, depending on Data & Resolution)**
     - Depending of the resolution and the data 
       - `count = len(dataType)* resolution.x * resolution.y * resolution.z`
     - Elements are packed as an `array of struct`
+
+### File format Conventions
+
+* Binary Floating-point data must be stored as little-endian
+* 3D Space Values must always be stored in Y-Up / LHS coordinate system.
 
 
 ## Version 1 (Legacy format)
@@ -56,7 +56,7 @@ Files are structured with the following:
 
 Files are structured with the following:
 
- - FourCC (4 Bytes)
+ - FourCC (4 Bytes) equal to `VF_F` or `VF_V` all uppercase
   - The FourCC describes the contents of the volume. It always starts with 3 char `VF_` then another char `F` or `V` to describe if the volume contains `float` data or `vector` data.
  - Volume Size (6 Bytes)
   - 3 `ushort` describes the X,Y, & Z size of the volume, with a maximum of 65535.
@@ -70,10 +70,10 @@ Various types are used in file format, as a reminder:
 ``` 
 type		size	packed		sign
 -----------------------------------------
-char	  1 byte				unsigned
-ushort    2 bytes				unsigned
-float     4 bytes				signed
-vector2	  8 bytes	float[2]	signed 
-vector3	 12 bytes	float[3]	signed 
-vector4	 16 bytes	float[4]	signed 
+char	  1 byte                 unsigned
+ushort    2 bytes                unsigned
+float     4 bytes                signed
+vector2	  8 bytes   float[2]     signed 
+vector3	 12 bytes   float[3]     signed 
+vector4	 16 bytes   float[4]     signed 
 ```
